@@ -1,24 +1,41 @@
 
-import './App.css';
-import { useState } from "react"
-import "./App.css"
+import './App.css'
+import axios from "axios"
+import {useState, useEffect} from "react"
+import {Col, Container, Row } from "react-bootstrap"
 
 function App() {
-  const [contador, setContador] = useState(0);
-  return (<div>
-    <p>{contador}</p>
-    <button onClick={() => setContador(contador + 1)}>+</button>
-    <button onClick={() => {
-      console.log(contador);
-      if (contador > 0) {
-        setContador(contador - 1);
-      } else {
-        alert("oi");
-      }
-    }
-    }>-</button>
+  const [posts, setPosts] = useState([]);
 
-  </div>);
+  useEffect(()=>{
+    axios.get('https://jsonplaceholder.typicode.com/posts').then(({data})=>{
+      setPosts(data)
+    })
+
+  }, [])
+
+
+  /*return (<div>
+    <ul>
+      {posts.map(post =>{
+        return <li>{post.title}</li>
+      })}
+    </ul>
+    
+  </div>);*/
+
+    return(
+      <Container>
+        <Row>
+        {posts.map(post =>{
+          return <Col>{post.title}</Col>
+        })}
+        </Row>
+      </Container>
+
+
+    )
+
 }
 
 export default App;
